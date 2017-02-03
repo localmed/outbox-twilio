@@ -1,0 +1,16 @@
+AllCops:
+  Exclude:
+    - "vendor/**/*"
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+
+Metrics/LineLength:
+  IgnoreCopDirectives: true
+  Max: 100
