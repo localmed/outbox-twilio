@@ -23,9 +23,9 @@ module Outbox
 
         options = @settings.dup
         @api_client = ::Twilio::REST::Client.new(
-          options.delete(:account_sid),
-          options.delete(:auth_token),
-          options
+          options[:username] || options[:account_sid],
+          options[:password] || options[:auth_token],
+          options[:account_sid],
         )
       end
 
@@ -39,7 +39,7 @@ module Outbox
           application_sid: sms[:application_sid]
         }
         params.delete_if { |_, value| value.nil? }
-        @api_client.account.messages.create(params)
+        @api_client.account.messages.create(params).fetch
       end
     end
   end
