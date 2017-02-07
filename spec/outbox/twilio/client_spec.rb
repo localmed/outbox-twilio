@@ -7,8 +7,7 @@ describe Outbox::Twilio::Client do
       expect(::Twilio::REST::Client).to receive(:new).with(
         'AC1',
         'abcdef',
-        'AC1',
-        nil
+        'AC1'
       ).and_return(api_client)
       client = Outbox::Twilio::Client.new(
         account_sid: 'AC1',
@@ -23,8 +22,7 @@ describe Outbox::Twilio::Client do
         expect(::Twilio::REST::Client).to receive(:new).with(
           'username',
           'abcdef',
-          'AC1',
-          nil
+          'AC1'
         ).and_return(api_client)
         client = Outbox::Twilio::Client.new(
           username: 'username',
@@ -53,8 +51,6 @@ describe Outbox::Twilio::Client do
     end
 
     it 'delivers the SMS' do
-      message_context = double(:message_context)
-      expect(message_context).to receive(:fetch)
       expect(@client.api_client.account.messages).to receive(:create).with(
         to: '+14155551212',
         from: 'Company Name',
@@ -62,7 +58,7 @@ describe Outbox::Twilio::Client do
         media_url: 'http://www.example.com/hearts.png',
         status_callback: 'http://www.example.com/callback',
         application_sid: '1234'
-      ).and_return(message_context)
+      ).and_return(double(:message_context))
       @client.deliver(@sms)
     end
   end
