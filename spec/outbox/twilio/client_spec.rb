@@ -51,7 +51,7 @@ describe Outbox::Twilio::Client do
     end
 
     it 'delivers the SMS' do
-      expect(@client.api_client.account.messages).to receive(:create).with(
+      expect(@client.api_client.api.account.messages).to receive(:create).with(
         to: '+14155551212',
         from: 'Company Name',
         body: 'Hello world.',
