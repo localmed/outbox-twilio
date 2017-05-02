@@ -39,7 +39,7 @@ module Outbox
           application_sid: sms[:application_sid]
         }
         params.delete_if { |_, value| value.nil? }
-        @api_client.account.messages.create(params)
+        @api_client.api.account.messages.create(params)
       end
     end
   end
