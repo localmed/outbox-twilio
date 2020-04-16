@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Outbox::Twilio::Client do
@@ -51,7 +53,7 @@ describe Outbox::Twilio::Client do
     end
 
     it 'delivers the SMS' do
-      expect(@client.api_client.api.account.messages).to receive(:create).with(
+      expect(@client.api_client.messages).to receive(:create).with(
         to: '+14155551212',
         from: 'Company Name',
         body: 'Hello world.',
@@ -60,6 +62,25 @@ describe Outbox::Twilio::Client do
         application_sid: '1234'
       ).and_return(double(:message_context))
       @client.deliver(@sms)
+    end
+
+    context 'with a subaccount' do
+      it 'delivers the SMS from the subaccount' do
+        @sms[:account_sid] = 'subaccount_sid_1'
+        account = double(:account, messages: double(:messages))
+        expect(@client.api_client.api).to(
+          receive(:accounts).with('subaccount_sid_1').and_return(account)
+        )
+        expect(account.messages).to receive(:create).with(
+          to: '+14155551212',
+          from: 'Company Name',
+          body: 'Hello world.',
+          media_url: 'http://www.example.com/hearts.png',
+          status_callback: 'http://www.example.com/callback',
+          application_sid: '1234'
+        ).and_return(double(:message_context))
+        @client.deliver(@sms)
+      end
     end
   end
 end

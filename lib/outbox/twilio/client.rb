@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'twilio-ruby'
 
 module Outbox
@@ -30,6 +32,12 @@ module Outbox
       end
 
       def deliver(sms)
+        account =
+          if sms[:account_sid]
+            @api_client.api.accounts(sms[:account_sid])
+          else
+            @api_client
+          end
         params = {
           from: sms.from,
           to: sms.to,
@@ -39,7 +47,7 @@ module Outbox
           application_sid: sms[:application_sid]
         }
         params.delete_if { |_, value| value.nil? }
-        @api_client.api.account.messages.create(params)
+        account.messages.create(params)
       end
     end
   end
