@@ -11,6 +11,10 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
 
+Naming/FileName:
+  Exclude:
+    - 'lib/outbox-twilio.rb'
+
 Layout/LineLength:
   IgnoreCopDirectives: true
   Max: 100
