@@ -1,6 +1,6 @@
-# coding: utf-8
+# frozen_string_literal: true
 
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'outbox/twilio/version'
 
@@ -20,9 +20,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'outbox', '~> 0.2'
-  spec.add_runtime_dependency 'twilio-ruby', '~> 5.0.0.rc17'
-  spec.add_development_dependency 'bundler', '~> 1.6'
+  spec.add_runtime_dependency 'twilio-ruby', '~> 5.0'
+  spec.add_development_dependency 'bundler', '>= 1.6'
   spec.add_development_dependency 'rake', '~> 12.0.0'
   spec.add_development_dependency 'rspec', '~> 3.5.0'
-  spec.add_development_dependency 'rubocop', '~> 0.48.1'
+  spec.add_development_dependency 'rubocop', '~> 0.82.0'
 end

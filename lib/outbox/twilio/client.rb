@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'twilio-ruby'
 
 module Outbox
@@ -25,7 +27,7 @@ module Outbox
         @api_client = ::Twilio::REST::Client.new(
           options[:username] || options[:account_sid],
           options[:password] || options[:auth_token],
-          options[:account_sid]
+          options[:subaccount_sid] || options[:account_sid]
         )
       end
 
@@ -39,7 +41,17 @@ module Outbox
           application_sid: sms[:application_sid]
         }
         params.delete_if { |_, value| value.nil? }
-        @api_client.api.account.messages.create(params)
+        account(sms).messages.create(params)
+      end
+
+      protected
+
+      def account(sms)
+        if sms[:account_sid]
+          @api_client.api.accounts(sms[:account_sid])
+        else
+          @api_client
+        end
       end
     end
   end
